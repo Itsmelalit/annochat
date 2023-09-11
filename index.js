@@ -11,7 +11,7 @@ const path = require('path');
 // app.use('/static', express.static(path.join(__dirname, '/public')))
 app.use(express.static('public'));
 app.get('/',(req,res)=>{
-    res.sendFile(__dirname +'/public/home.html')
+    res.sendFile(__dirname +'/public/index.html')
 });
 app.get('/otv',(req,res)=>{
     res.sendFile(__dirname +'/public/ome.html')
