@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Annochat</title>
+  <script src="http://localhost:200/socket.io/socket.io.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      background-image: linear-gradient(rgb(16, 19, 60),rgb(40 215 102));
+      flex-direction: column;
+      height: 100vh;
+    } 
+    #logo{
+          height: auto;
+          width: 6%;
+          float: right;
+          margin: -67px 491px;;
+}
+    header {
+      background-color: #1b1919;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-family: 'Courier New', Courier, monospace;
+    font-size: 2em;
+    font-weight: bold;
+      
+    }
+    
+    .chatBox {
+      flex-grow: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+    
+    /* .message {
+      margin-bottom: 10px;
+      padding: 5px;
+      background-color: #f2f2f2;
+      border-radius: 5px;
+    }
+    
+    .message.sent {
+      align-self: flex-end;
+      color: white;
+    } */
+    .message.send {
+    text-align: right;
+    color: #fff;
+    background-color: #007bff;
+  }  
+    .left{
+    background-color: #b4b8bd;
+    text-align: left;
+    margin-top: 1px;
+  }
+  .middle{
+    background-color: #007bff;
+    text-align: center;
+    margin-top: 1px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+  .right{
+    background-color: #789fc8;
+    text-align: right;
+    margin-top: 1px;
+  }
+    
+    .bhejo{
+      display: flex;
+      padding: 10px;
+      background-color: #f2f2f2;
+    }
+    
+    .behjo input[type="text"] {
+      flex-grow: 1;
+      padding: 5px;
+      border: none;
+      border-radius: 5px;
+    }
+    
+    .bhejo button{
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Annochat
+    <img id="logo" src="c:\Users\LALIT\Downloads\annochat2.png">
+  </header>
+  <div class="chatBox" id="chatBox">
+    <!-- <div class="message"> -->
+      <div class="message right"> </div></div>
+      <div class="message middle"></div>
+      <div class="message left"> </div>
+  </div>    
+<form id="chatform" >
+    <div class="bhejo">
+      <input type="text" id="input" placeholder="Type your message...">
+      <button type="submit" id="send" onclick="moklo()">Send</button>
+    </div>
+</form>
+  </body><script>
+    document.getElementById("chatform").addEventListener("click", function(event){
+  event.preventDefault()
+});
+    var socket = io();
+    const x = prompt('enter your name');
+    socket.emit('sendusername',x);
+    socket.on('brdcast',data=>{
+    const chatMessages = document.getElementById('chatBox');
+    const li = document.createElement('li');
+    li.textContent = `${data} joined chat `;
+    li.classList.add('middle');
+    chatMessages.appendChild(li);
+    })
+    function moklo(){
+    const msginput = document.getElementById('input');
+    const msg = msginput.value.trim();
+
+    if (msg !== ''){
+      socket.emit('moklo',({x,msg}));
+      msginput.value = '';
+
+    const chatMessages = document.getElementById('chatBox');
+    const li = document.createElement('li');
+    li.textContent = `${x} :${msg}`;
+    li.classList.add('right');
+    chatMessages.appendChild(li);
+    }
+  }
+  socket.on('malyo',({x,msg})=>{
+    console.log(msg);
+    const chatMessages = document.getElementById('chatBox');
+    const li = document.createElement('li');
+    li.textContent = `${x}: ${msg}`;
+    li.classList.add('left');
+    chatMessages.appendChild(li);
+  })
+  </script>
+  </html>
